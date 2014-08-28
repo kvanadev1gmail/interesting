@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Interesting::Application.routes.draw do
   resources :pins
 
   devise_for :users
