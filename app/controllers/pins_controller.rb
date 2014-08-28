@@ -27,11 +27,16 @@ class PinsController < ApplicationController
   # POST /pins.json
   def create
     @pin = current_user.pins.build(pin_params)
+
+    respond_to do |format|
       if @pin.save
-        redirect_to @pin, notice: 'Pin was successfully created.' 
+        format.html { redirect_to @pin, notice: 'Pin was successfully created.' }
+        format.json { render :show, status: :created, location: @pin }
       else
-        render action:'new' 
+        format.html { render :new }
+        format.json { render json: @pin.errors, status: :unprocessable_entity }
       end
+    end
   end
 
 
@@ -66,6 +71,6 @@ class PinsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pin_params
-      params.require(:pin).permit(:description)
+      params.require(:pin).permit(:description, :image)
     end
 end
